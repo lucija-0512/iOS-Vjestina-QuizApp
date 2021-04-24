@@ -2,7 +2,6 @@ import UIKit
 import PureLayout
 
 class TableHeader : UITableViewHeaderFooterView {
-    static let identifier = "TableHeader"
     
      var label : UILabel = {
         let label = UILabel()
