@@ -8,10 +8,6 @@ class CustomTableViewCell: UITableViewCell {
     var descriptionQuiz : UILabel!
     var levelQuiz : UILabel!
     
-    //var imgQuiz = UIImageView()
-    //var titleQuiz = UILabel()
-    //var descriptionQuiz = UILabel()
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             
@@ -30,13 +26,16 @@ class CustomTableViewCell: UITableViewCell {
         imgQuiz = UIImageView()
         titleQuiz = UILabel()
         titleQuiz.font = UIFont.boldSystemFont(ofSize: 20.0)
-        titleQuiz.lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
+        titleQuiz.textColor = .white
+        titleQuiz.lineBreakMode = .byWordWrapping
         titleQuiz.numberOfLines = 0
         descriptionQuiz = UILabel()
-        descriptionQuiz.lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
+        descriptionQuiz.lineBreakMode = .byWordWrapping
         descriptionQuiz.numberOfLines = 0
+        descriptionQuiz.textColor = .white
         levelQuiz = UILabel()
         levelQuiz.font = UIFont.boldSystemFont(ofSize: 20.0)
+        levelQuiz.textColor = .white
         
         
         addSubview(imgQuiz)

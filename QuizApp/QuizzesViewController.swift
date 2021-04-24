@@ -38,7 +38,7 @@ class QuizzesViewController: UIViewController {
     
     private var quizzes = [Quiz]()
     let cellIdentifier = "cellId"
-    var quizzesGroupedByCategory = [(String,Array<Quiz>)]()
+    var quizzesGroupedByCategory = [(QuizCategory,Array<Quiz>)]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +76,7 @@ class QuizzesViewController: UIViewController {
         tableView = UITableView()
         tableView.isHidden = true
         tableView.rowHeight = 150
+        tableView.backgroundColor = .clear
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
         tableView.isUserInteractionEnabled = true
@@ -92,17 +93,15 @@ class QuizzesViewController: UIViewController {
     
     @objc
     func customAction() {
-        
         tableView.isHidden = false
         quizzes = DataService().fetchQuizes()
         self.quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
         tableView.reloadData()
         
-        var count = quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
+        let count = quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
         
         fact.text = "Fun Fact"
         nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
-        
      }
     
     private func addConstraints() {
@@ -127,32 +126,20 @@ class QuizzesViewController: UIViewController {
         tableView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 10)
         tableView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 10)
         tableView.autoPinEdge(.top, to: .bottom, of: nbaQuestion, withOffset: 30)
-        //tableView.autoSetDimensions(to: CGSize(width: view.bounds.width, height: view.bounds.height))
-        tableView.autoSetDimension(.height, toSize: view.bounds.height)
+        tableView.autoPinEdge(toSuperviewEdge: .bottom)
     }
     
-    private func groupByCategory(quizzesList: [Quiz]) -> [(String,Array<Quiz>)] {
-        var quizzesGroupedByCategory = Dictionary<String, Array<Quiz>>()
-        
-
-        // Looping the Array of transactions
+    private func groupByCategory(quizzesList: [Quiz]) -> [(QuizCategory,Array<Quiz>)] {
+        var quizzesGroupedByCategory = Dictionary<QuizCategory, Array<Quiz>>()
         for quiz in quizzesList {
-
-
-          // Verifying if the array is nil for the current date used as a
-          // key in the dictionary, if so the array is initialized only once
-            if quizzesGroupedByCategory[quiz.category.rawValue] == nil {
-            quizzesGroupedByCategory[quiz.category.rawValue] = Array<Quiz>()
+            if quizzesGroupedByCategory[quiz.category] == nil {
+            quizzesGroupedByCategory[quiz.category] = Array<Quiz>()
           }
-
-          // Adding the transaction in the dictionary to the key that is the date
-            quizzesGroupedByCategory[quiz.category.rawValue]?.append(quiz)
+            quizzesGroupedByCategory[quiz.category]?.append(quiz)
         }
-
-        // Sorting the dictionary to descending order and the result will be
-        // an array of tuples with key(String) and value(Array<Transaction>)
-        return quizzesGroupedByCategory.sorted { $0.0 > $1.0 }
+        return quizzesGroupedByCategory.compactMap{$0}
       }
+
 
 }
 extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
@@ -173,25 +160,17 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
         cell.titleQuiz.text = quiz.title
         cell.descriptionQuiz.text = quiz.description
         cell.levelQuiz.text = "Level \(quiz.level)"
-        
+        cell.backgroundColor = UIColor(red: 0.49, green: 0.78, blue: 0.94, alpha: 1.00)
         return cell
     }
-    
-    
+        
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! TableHeader
-        if section == 0 {
-            header.label.text = QuizCategory.sport.rawValue
-        }
-        else {
-            header.label.text = QuizCategory.science.rawValue
-        }
+        header.label.text = quizzesGroupedByCategory[section].0.rawValue
         return header
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
-    
-    
 }

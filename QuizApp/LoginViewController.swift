@@ -1,4 +1,3 @@
-
 import UIKit
 import PureLayout
 
@@ -65,11 +64,11 @@ class LoginViewController: UIViewController {
     }
     @objc
     func customAction() {
-        var name: String = email.text!
-        var pass: String = password.text!
+        guard let name = email.text else { return }
+        guard let pass = password.text else { return }
         print(name)
         print(pass)
-        var message = DataService().login(email: name, password: pass)
+        let message = DataService().login(email: name, password: pass)
         print(message)
      }
     
