@@ -174,4 +174,9 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var a = quizzesGroupedByCategory[indexPath.row]
+        print(a)
+    }
 }
