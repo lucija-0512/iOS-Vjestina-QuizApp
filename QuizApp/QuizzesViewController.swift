@@ -23,7 +23,6 @@ class TableHeader : UITableViewHeaderFooterView {
     override func layoutSubviews() {
         super.layoutSubviews()
         label.sizeToFit()
-        //label.autoCenterInSuperview()
     }
     
 }
@@ -43,6 +42,9 @@ class QuizzesViewController: UIViewController {
         super.viewDidLoad()
         buildViews()
         addConstraints()
+        
+        navigationItem.title = "Quizzes"
+        //navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func buildViews() {

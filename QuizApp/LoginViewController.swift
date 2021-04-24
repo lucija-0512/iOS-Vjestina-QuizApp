@@ -14,6 +14,7 @@ class LoginViewController: UIViewController {
         
         buildViews()
         addConstraints()
+        navigationItem.title = "Login"
     }
     
     private func buildViews() {
@@ -69,6 +70,14 @@ class LoginViewController: UIViewController {
         print(name)
         print(pass)
         let message = DataService().login(email: name, password: pass)
+        if case LoginStatus.success = message  {
+            let vc = QuizzesViewController()
+            //self.navigationController?.pushViewController(vc, animated: true)
+            let customViewControllersArray : [UIViewController] = [vc]
+            self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
+            //UIApplication.shared.windows.first?.rootViewController = vc
+            //UIApplication.shared.windows.first?.makeKeyAndVisible()
+        }
         print(message)
      }
     
