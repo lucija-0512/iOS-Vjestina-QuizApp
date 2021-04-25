@@ -12,6 +12,7 @@
 		523EEBA9261CC2D80062E20F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523EEBA8261CC2D80062E20F /* SceneDelegate.swift */; };
 		523EEBB0261CC2D90062E20F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523EEBAF261CC2D90062E20F /* Assets.xcassets */; };
 		523EEBB3261CC2D90062E20F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 523EEBB1261CC2D90062E20F /* LaunchScreen.storyboard */; };
+		523FF1F42636262A00A88584 /* QuizResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523FF1F32636262A00A88584 /* QuizResultViewController.swift */; };
 		5278763A262499BD0040BA35 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787639262499BD0040BA35 /* LoginViewController.swift */; };
 		5278765B2624DAC80040BA35 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527876592624DAC80040BA35 /* DataService.swift */; };
 		5278765C2624DAC80040BA35 /* DataServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5278765A2624DAC80040BA35 /* DataServiceProtocol.swift */; };
@@ -33,6 +34,7 @@
 		523EEBAF261CC2D90062E20F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		523EEBB2261CC2D90062E20F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		523EEBB4261CC2D90062E20F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		523FF1F32636262A00A88584 /* QuizResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultViewController.swift; sourceTree = "<group>"; };
 		52787639262499BD0040BA35 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		527876592624DAC80040BA35 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		5278765A2624DAC80040BA35 /* DataServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataServiceProtocol.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				527876702624E5BC0040BA35 /* QuizzesViewController.swift */,
 				5205C8B42626093900E6AAD3 /* CustomTableViewCell.swift */,
 				52E36E3B2634CB7D0026412B /* QuizzViewController.swift */,
+				523FF1F32636262A00A88584 /* QuizResultViewController.swift */,
 			);
 			path = QuizApp;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				52E36E3C2634CB7D0026412B /* QuizzViewController.swift in Sources */,
 				5205C8B52626093900E6AAD3 /* CustomTableViewCell.swift in Sources */,
 				5278763A262499BD0040BA35 /* LoginViewController.swift in Sources */,
+				523FF1F42636262A00A88584 /* QuizResultViewController.swift in Sources */,
 				523EEBA7261CC2D80062E20F /* AppDelegate.swift in Sources */,
 				527876712624E5BC0040BA35 /* QuizzesViewController.swift in Sources */,
 				527876692624DAF80040BA35 /* QuizCategory.swift in Sources */,

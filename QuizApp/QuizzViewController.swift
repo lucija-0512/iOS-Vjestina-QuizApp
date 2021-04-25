@@ -159,7 +159,8 @@ class QuizzViewController: UIViewController {
             answer3.backgroundColor = UIColor(red: 0.49, green: 0.78, blue: 0.94, alpha: 1.00)
             answer4.backgroundColor = UIColor(red: 0.49, green: 0.78, blue: 0.94, alpha: 1.00)
         } else {
-           // pozovi novi view controller s rezultatom
+            let targetViewController = QuizResultViewController(_correct: count, _total: total)
+            navigationController?.pushViewController(targetViewController, animated: true)
         }
     }
     
