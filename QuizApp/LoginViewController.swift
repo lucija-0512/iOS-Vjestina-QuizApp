@@ -4,7 +4,6 @@ import PureLayout
 
 class LoginViewController: UIViewController {
     
-    private var titleLabel : UILabel!
     private var email: UITextField!
     private var password: UITextField!
     private var loginButton : UIButton!
@@ -14,17 +13,16 @@ class LoginViewController: UIViewController {
         
         buildViews()
         addConstraints()
-        navigationItem.title = "Login"
+        let titleLabel = UILabel()
+        titleLabel.text = "PopQuiz"
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 40.0)
+        navigationItem.titleView = titleLabel
+        self.navigationController?.navigationBar.barTintColor = .systemBlue
     }
     
     private func buildViews() {
         view.backgroundColor = .systemBlue
-        
-        titleLabel = UILabel()
-        titleLabel.text = "PopQuiz"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 40.0)
-        
         
         email = UITextField()
         email.backgroundColor = .lightGray
@@ -58,7 +56,6 @@ class LoginViewController: UIViewController {
         loginButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: 20.0)
         loginButton.addTarget(self, action: #selector(customAction), for: .touchUpInside)
         
-        view.addSubview(titleLabel)
         view.addSubview(email)
         view.addSubview(password)
         view.addSubview(loginButton)
@@ -72,32 +69,30 @@ class LoginViewController: UIViewController {
         let message = DataService().login(email: name, password: pass)
         if case LoginStatus.success = message  {
             let vc = QuizzesViewController()
-            //self.navigationController?.pushViewController(vc, animated: true)
             let customViewControllersArray : [UIViewController] = [vc]
             self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
-            //UIApplication.shared.windows.first?.rootViewController = vc
-            //UIApplication.shared.windows.first?.makeKeyAndVisible()
         }
         print(message)
      }
     
     private func addConstraints() {
         
-        titleLabel.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        titleLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 50)
-        
-        email.autoSetDimensions(to: CGSize(width: 300, height: 50))
-        email.autoCenterInSuperview()
+        email.autoPinEdge(toSuperviewSafeArea: .top, withInset: 100)
+        email.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
+        email.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 30)
+        email.autoSetDimension(.height, toSize: 50)
         
         password.autoPinEdge(.top, to: .bottom, of: email, withOffset: 10)
         password.autoAlignAxis(.vertical, toSameAxisOf: email)
-        password.autoMatch(.width, to: .width, of: email)
         password.autoMatch(.height, to: .height, of: email)
+        password.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
+        password.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 30)
         
         loginButton.autoPinEdge(.top, to: .bottom, of: password, withOffset: 30)
         loginButton.autoAlignAxis(.vertical, toSameAxisOf: password)
-        loginButton.autoMatch(.width, to: .width, of: password)
         loginButton.autoMatch(.height, to: .height, of: password)
+        loginButton.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
+        loginButton.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 30)
     }
     
 

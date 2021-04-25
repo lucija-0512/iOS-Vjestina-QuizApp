@@ -28,7 +28,6 @@ class TableHeader : UITableViewHeaderFooterView {
 }
 class QuizzesViewController: UIViewController {
 
-    private var titleLabel : UILabel!
     private var showButton : UIButton!
     private var tableView : UITableView!
     private var fact : UILabel!
@@ -43,17 +42,17 @@ class QuizzesViewController: UIViewController {
         buildViews()
         addConstraints()
         
-        navigationItem.title = "Quizzes"
+        let titleLabel = UILabel()
+        titleLabel.text = "PopQuiz"
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 30.0)
+        navigationItem.titleView = titleLabel
+        self.navigationController?.navigationBar.barTintColor = .systemBlue
         //navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func buildViews() {
         view.backgroundColor = .systemBlue
-        
-        titleLabel = UILabel()
-        titleLabel.text = "PopQuiz"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 40.0)
         
         showButton = UIButton()
         showButton.setTitle("Get Quizz", for: .normal)
@@ -84,7 +83,6 @@ class QuizzesViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        view.addSubview(titleLabel)
         view.addSubview(showButton)
         view.addSubview(tableView)
         view.addSubview(fact)
@@ -106,11 +104,9 @@ class QuizzesViewController: UIViewController {
      }
     
     private func addConstraints() {
-        titleLabel.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        titleLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 20)
         
+        showButton.autoPinEdge(toSuperviewSafeArea: .top, withInset: 30)
         showButton.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        showButton.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 30)
         showButton.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 50)
         showButton.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 50)
         showButton.autoSetDimension(.height, toSize: 50)
