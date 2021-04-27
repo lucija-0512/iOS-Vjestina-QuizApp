@@ -68,7 +68,7 @@ class LoginViewController: UIViewController {
         print(pass)
         let message = DataService().login(email: name, password: pass)
         if case LoginStatus.success = message  {
-            let vc = QuizzesViewController()
+            let vc = TabViewController()
             let customViewControllersArray : [UIViewController] = [vc]
             self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
         }
