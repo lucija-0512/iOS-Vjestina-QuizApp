@@ -1,16 +1,10 @@
-//
-//  QuizzViewController.swift
-//  QuizApp
-//
-//  Created by five on 24/04/2021.
-//
+
 
 import UIKit
 import PureLayout
 
 class QuizzViewController: UIViewController {
 
-    private var quiz : Quiz
     private var currentQuestion : Question
     private var questionLabel : UILabel!
     private var answer1: UIButton!
@@ -18,13 +12,10 @@ class QuizzViewController: UIViewController {
     private var answer3: UIButton!
     private var answer4: UIButton!
     private var buttonArray: [UIButton]!
-    private var count = 0
-    private var total : Int
+    var pageController : UIPageViewController!
 
-    init(_quiz: Quiz) {
-        self.quiz = _quiz
-        self.currentQuestion = _quiz.questions[0]
-        self.total = _quiz.questions.count
+    init(_question: Question) {
+        self.currentQuestion = _question;
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -138,30 +129,14 @@ class QuizzViewController: UIViewController {
         let greenColor = UIColor(red: 0.18, green: 0.80, blue: 0.44, alpha: 1.00)
         if sender.tag == currentQuestion.correctAnswer {
             sender.backgroundColor = greenColor
-            count += 1
         }
         else {
             buttonArray[currentQuestion.correctAnswer].backgroundColor = greenColor
             sender.backgroundColor = UIColor(red: 0.80, green: 0.29, blue: 0.21, alpha: 1.00)
         }
-        //usleep(2000000)
         
-        let currId = currentQuestion.id
-        if let foo = quiz.questions.first(where: {$0.id == currId+1}) {
-           currentQuestion = foo
-           questionLabel.text = currentQuestion.question
-            answer1.setTitle(currentQuestion.answers[0], for: .normal)
-            answer2.setTitle(currentQuestion.answers[1], for: .normal)
-            answer3.setTitle(currentQuestion.answers[2], for: .normal)
-            answer4.setTitle(currentQuestion.answers[3], for: .normal)
-            answer1.backgroundColor = UIColor(red: 0.49, green: 0.78, blue: 0.94, alpha: 1.00)
-            answer2.backgroundColor = UIColor(red: 0.49, green: 0.78, blue: 0.94, alpha: 1.00)
-            answer3.backgroundColor = UIColor(red: 0.49, green: 0.78, blue: 0.94, alpha: 1.00)
-            answer4.backgroundColor = UIColor(red: 0.49, green: 0.78, blue: 0.94, alpha: 1.00)
-        } else {
-            let targetViewController = QuizResultViewController(_correct: count, _total: total)
-            navigationController?.pushViewController(targetViewController, animated: true)
-        }
+        let pageController = self.parent as! PageViewController
+        pageController.goToNextPage()
     }
     
 }
