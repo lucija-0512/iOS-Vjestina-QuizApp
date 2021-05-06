@@ -1,10 +1,3 @@
-//
-//  SettingsViewController.swift
-//  QuizApp
-//
-//  Created by five on 26/04/2021.
-//
-
 import UIKit
 
 class SettingsViewController: UIViewController {
@@ -56,7 +49,7 @@ class SettingsViewController: UIViewController {
         name.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
         
         logOut.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        logOut.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 20)
+        logOut.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 30)
         logOut.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         logOut.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
         logOut.autoSetDimension(.height, toSize: 50)
@@ -68,14 +61,5 @@ class SettingsViewController: UIViewController {
         let customViewControllersArray : [UIViewController] = [vc]
         self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

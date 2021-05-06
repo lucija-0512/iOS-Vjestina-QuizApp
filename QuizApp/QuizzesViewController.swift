@@ -42,13 +42,7 @@ class QuizzesViewController: UIViewController {
         buildViews()
         addConstraints()
         
-        let titleLabel = UILabel()
-        titleLabel.text = "PopQuiz"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 30.0)
-        navigationItem.titleView = titleLabel
         self.navigationController?.navigationBar.barTintColor = .systemBlue
-        //navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func buildViews() {
@@ -64,11 +58,11 @@ class QuizzesViewController: UIViewController {
         
         fact = UILabel()
         fact.textColor = .white
-        fact.font = UIFont.boldSystemFont(ofSize: 20.0)
+        fact.font = UIFont.boldSystemFont(ofSize: 18.0)
         
         nbaQuestion = UILabel()
         nbaQuestion.textColor = .white
-        nbaQuestion.font = UIFont.systemFont(ofSize: 20.0)
+        nbaQuestion.font = UIFont.systemFont(ofSize: 18.0)
         nbaQuestion.lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
         nbaQuestion.numberOfLines = 0
         
@@ -111,7 +105,7 @@ class QuizzesViewController: UIViewController {
         showButton.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 50)
         showButton.autoSetDimension(.height, toSize: 50)
         
-        fact.autoPinEdge(.top, to: .bottom, of: showButton, withOffset: 30)
+        fact.autoPinEdge(.top, to: .bottom, of: showButton, withOffset: 20)
         fact.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
         fact.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 10)
         
@@ -122,7 +116,7 @@ class QuizzesViewController: UIViewController {
         
         tableView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 10)
         tableView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 10)
-        tableView.autoPinEdge(.top, to: .bottom, of: nbaQuestion, withOffset: 30)
+        tableView.autoPinEdge(.top, to: .bottom, of: nbaQuestion, withOffset: 10)
         tableView.autoPinEdge(toSuperviewEdge: .bottom)
     }
     
@@ -172,10 +166,13 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let fetchedQuiz = quizzesGroupedByCategory[indexPath.section].1[indexPath.row]
         let pageViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+
         pageViewController.quiz = fetchedQuiz
-        let targetViewController = pageViewController
-        navigationController?.pushViewController(targetViewController, animated: true)
+        navigationController?.pushViewController(pageViewController, animated: true)
     }
+    
+   
 }

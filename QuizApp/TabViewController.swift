@@ -1,10 +1,3 @@
-//
-//  TabViewController.swift
-//  QuizApp
-//
-//  Created by five on 27/04/2021.
-//
-
 import UIKit
 
 class TabViewController: UITabBarController {
@@ -13,23 +6,18 @@ class TabViewController: UITabBarController {
         super.viewDidLoad()
 
         let quizzesVC = QuizzesViewController()
-        quizzesVC.tabBarItem = UITabBarItem(title: "Quizzes", image: .add, selectedImage: .add)
+        quizzesVC.tabBarItem = UITabBarItem(title: "Quiz", image: UIImage(named: "Dashboard.png"), selectedImage: UIImage(named: "Quizzes.png"))
         
         let settingsVC = SettingsViewController()
-        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: .add, selectedImage: .add)
+        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(named: "Settings.png"), selectedImage: UIImage(named: "Settings.png"))
         
         self.viewControllers = [quizzesVC, settingsVC]
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "PopQuiz"
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 30.0)
+        navigationItem.titleView = titleLabel
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

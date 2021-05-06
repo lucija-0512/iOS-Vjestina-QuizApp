@@ -5,6 +5,7 @@ import PureLayout
 
 class QuizzViewController: UIViewController {
 
+    private var currentPage : UILabel!
     private var currentQuestion : Question
     private var questionLabel : UILabel!
     private var answer1: UIButton!
@@ -12,9 +13,10 @@ class QuizzViewController: UIViewController {
     private var answer3: UIButton!
     private var answer4: UIButton!
     private var buttonArray: [UIButton]!
-    var pageController : UIPageViewController!
+    var progress : UIProgressView!
 
-    init(_question: Question) {
+    init(_question: Question, _current : UILabel) {
+        self.currentPage = _current
         self.currentQuestion = _question;
         super.init(nibName: nil, bundle: nil)
     }
@@ -28,11 +30,6 @@ class QuizzViewController: UIViewController {
         buildViews()
         addConstraints()
         
-        let titleLabel = UILabel()
-        titleLabel.text = "PopQuiz"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 30.0)
-        navigationItem.titleView = titleLabel
         self.navigationController?.navigationBar.barTintColor = .systemBlue
         self.navigationController?.navigationBar.tintColor = .white
         
@@ -42,6 +39,9 @@ class QuizzViewController: UIViewController {
         view.backgroundColor = .systemBlue
         
         buttonArray = [UIButton]()
+        
+        currentPage.textColor = .white
+        currentPage.font = UIFont.boldSystemFont(ofSize: 18.0)
         
         questionLabel = UILabel()
         questionLabel.text = currentQuestion.question
@@ -86,6 +86,8 @@ class QuizzViewController: UIViewController {
         answer4.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
         buttonArray.append(answer4)
         
+        view.addSubview(progress)
+        view.addSubview(currentPage)
         view.addSubview(questionLabel)
         view.addSubview(answer1)
         view.addSubview(answer2)
@@ -94,8 +96,18 @@ class QuizzViewController: UIViewController {
     }
     
     private func addConstraints() {
+        currentPage.autoAlignAxis(toSuperviewMarginAxis: .vertical)
+        currentPage.autoPinEdge(toSuperviewSafeArea: .top, withInset: 40)
+        currentPage.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        currentPage.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
+        
+        progress.autoAlignAxis(toSuperviewMarginAxis: .vertical)
+        progress.autoPinEdge(.top, to: .bottom, of: currentPage, withOffset: 30)
+        progress.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        progress.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
+        
         questionLabel.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        questionLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 40)
+        questionLabel.autoPinEdge(.top, to: .bottom, of: progress, withOffset: 30)
         questionLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         questionLabel.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)        
         
@@ -126,17 +138,18 @@ class QuizzViewController: UIViewController {
     @objc
     func buttonClicked(sender:UIButton)
     {
+        let pageController = self.parent as! PageViewController
         let greenColor = UIColor(red: 0.18, green: 0.80, blue: 0.44, alpha: 1.00)
         if sender.tag == currentQuestion.correctAnswer {
             sender.backgroundColor = greenColor
+            pageController.correct += 1
         }
         else {
             buttonArray[currentQuestion.correctAnswer].backgroundColor = greenColor
             sender.backgroundColor = UIColor(red: 0.80, green: 0.29, blue: 0.21, alpha: 1.00)
         }
-        
-        let pageController = self.parent as! PageViewController
-        pageController.goToNextPage()
+        pageController.progressView.progress += pageController.progressValue
+        pageController.nextPage()
     }
     
 }
