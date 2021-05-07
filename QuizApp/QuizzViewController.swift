@@ -13,7 +13,7 @@ class QuizzViewController: UIViewController {
     private var answer3: UIButton!
     private var answer4: UIButton!
     private var buttonArray: [UIButton]!
-    var progress : UIProgressView!
+    var stackView : UIStackView!
 
     init(_question: Question, _current : UILabel) {
         self.currentPage = _current
@@ -85,7 +85,7 @@ class QuizzViewController: UIViewController {
         answer4.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
         buttonArray.append(answer4)
         
-        view.addSubview(progress)
+        view.addSubview(stackView)
         view.addSubview(currentPage)
         view.addSubview(questionLabel)
         view.addSubview(answer1)
@@ -100,13 +100,13 @@ class QuizzViewController: UIViewController {
         currentPage.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         currentPage.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
         
-        progress.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        progress.autoPinEdge(.top, to: .bottom, of: currentPage, withOffset: 30)
-        progress.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
-        progress.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
+        stackView.autoAlignAxis(toSuperviewMarginAxis: .vertical)
+        stackView.autoPinEdge(.top, to: .bottom, of: currentPage, withOffset: 30)
+        stackView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
+        stackView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
         
         questionLabel.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        questionLabel.autoPinEdge(.top, to: .bottom, of: currentPage, withOffset: 70)
+        questionLabel.autoPinEdge(.top, to: .bottom, of: currentPage, withOffset: 60)
         questionLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         questionLabel.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)        
         
@@ -139,16 +139,16 @@ class QuizzViewController: UIViewController {
     {
         let pageController = self.parent as! PageViewController
         let greenColor = UIColor(red: 0.18, green: 0.80, blue: 0.44, alpha: 1.00)
+        let redColor = UIColor(red: 0.80, green: 0.29, blue: 0.21, alpha: 1.00)
         if sender.tag == currentQuestion.correctAnswer {
             sender.backgroundColor = greenColor
             pageController.correct += 1
+            pageController.nextPage(_color: .green)
         }
         else {
             buttonArray[currentQuestion.correctAnswer].backgroundColor = greenColor
-            sender.backgroundColor = UIColor(red: 0.80, green: 0.29, blue: 0.21, alpha: 1.00)
+            sender.backgroundColor = redColor
+            pageController.nextPage(_color: .red)
         }
-        pageController.progressView.progress += pageController.progressValue
-        pageController.nextPage()
     }
-    
 }

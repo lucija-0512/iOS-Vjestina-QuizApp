@@ -1,12 +1,11 @@
 import UIKit
-
 class PageViewController: UIPageViewController {
 
     var quiz : Quiz!
     private var controllers: [UIViewController] = []
     var correct = 0
     var total = 0
-    var progressView : UIProgressView!
+    var stackView : UIStackView!
     var progressValue : Float!
     var controllerNum = 0
     
@@ -25,10 +24,12 @@ class PageViewController: UIPageViewController {
             controllers.append(quizViewController)
             count += 1
         }
-        progressView = UIProgressView(progressViewStyle: .default)
-        progressView.progressTintColor = .white
-        progressView.trackTintColor = .lightGray
-        progressView.progress = 0.25
+        stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        for _ in 1...quiz.questions.count {
+            stackView.addArrangedSubview(UIProgressView(progressViewStyle: .default))
+        }
         
         let titleLabel = UILabel()
         titleLabel.text = "PopQuiz"
@@ -41,21 +42,26 @@ class PageViewController: UIPageViewController {
         guard let firstVC = controllers.first as? QuizzViewController
             else { return }
         view.backgroundColor = .systemBlue
-        //postavljanje boje indikatora stranice
-        let pageAppearance = UIPageControl.appearance()
-        pageAppearance.currentPageIndicatorTintColor = .white
-        pageAppearance.pageIndicatorTintColor = .lightGray
-        pageAppearance.backgroundColor = .systemBlue
 
-        firstVC.progress = progressView
+        let pView = UIProgressView(progressViewStyle: .default)
+        pView.trackTintColor = .white
+        
+        stackView.replaceView(atIndex: 0, withView: pView)
+        firstVC.stackView = stackView
         setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
     }
     
-    func nextPage() {
+    func nextPage(_color : UIColor) {
+        let lastProgress = UIProgressView(progressViewStyle: .default)
+        lastProgress.trackTintColor = _color
+        stackView.replaceView(atIndex: controllerNum, withView: lastProgress)
         controllerNum += 1
         if (controllers.count > controllerNum) {
             guard let nextViewController = controllers[controllerNum] as? QuizzViewController else {return}
-            nextViewController.progress = progressView
+            let currentProgress = UIProgressView(progressViewStyle: .default)
+            currentProgress.trackTintColor = .white
+            stackView.replaceView(atIndex: controllerNum, withView: currentProgress)
+            nextViewController.stackView = stackView
             setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
         }
         else {
@@ -63,7 +69,12 @@ class PageViewController: UIPageViewController {
             navigationController?.pushViewController(targetController, animated: true)
             return
         }
-        
-        
+    }
+}
+extension UIStackView {
+    func replaceView(atIndex index: Int, withView view: UIView) {
+        let viewToRemove = arrangedSubviews[index]
+        removeArrangedSubview(viewToRemove)
+        insertArrangedSubview(view, at: index)
     }
 }
