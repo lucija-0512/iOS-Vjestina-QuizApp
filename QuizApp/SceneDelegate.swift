@@ -11,6 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    private var router : AppRouter = AppRouter(navigationController: UINavigationController())
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -20,12 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         else { return }
         
         window = UIWindow(windowScene: windowScene)
-        let vc = LoginViewController()
-        let navigationController = UINavigationController(rootViewController: vc)
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
-        
-        
+        router.setStartScreen(in: window)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

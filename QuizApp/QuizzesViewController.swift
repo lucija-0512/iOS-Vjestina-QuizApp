@@ -169,7 +169,6 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let fetchedQuiz = quizzesGroupedByCategory[indexPath.section].1[indexPath.row]
         let pageViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-
         pageViewController.quiz = fetchedQuiz
         navigationController?.pushViewController(pageViewController, animated: true)
     }

@@ -5,11 +5,13 @@ class SettingsViewController: UIViewController {
     private var username : UILabel!
     private var name : UILabel!
     private var logOut: UIButton!
+    private var router : AppRouterProtocol!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.router = AppRouter(navigationController: self.navigationController!)
         buildViews()
         addConstraints()
         self.navigationController?.navigationBar.barTintColor = .systemBlue
@@ -57,9 +59,7 @@ class SettingsViewController: UIViewController {
     
     @objc
     private func customAction() {
-        let vc = LoginViewController()
-        let customViewControllersArray : [UIViewController] = [vc]
-        self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
+        router.goToLoginViewController()
     }
 
 }

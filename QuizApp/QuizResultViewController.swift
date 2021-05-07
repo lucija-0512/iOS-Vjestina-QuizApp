@@ -21,7 +21,7 @@ class QuizResultViewController: UIViewController {
         buildViews()
         addConstraints()
         
-        self.navigationController?.isNavigationBarHidden = true//setNavigationBarHidden(true, animated: false)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     private func buildViews() {

@@ -29,7 +29,6 @@ class QuizzViewController: UIViewController {
         super.viewDidLoad()
         buildViews()
         addConstraints()
-        
         self.navigationController?.navigationBar.barTintColor = .systemBlue
         self.navigationController?.navigationBar.tintColor = .white
         
@@ -107,7 +106,7 @@ class QuizzViewController: UIViewController {
         progress.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
         
         questionLabel.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        questionLabel.autoPinEdge(.top, to: .bottom, of: progress, withOffset: 30)
+        questionLabel.autoPinEdge(.top, to: .bottom, of: currentPage, withOffset: 70)
         questionLabel.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
         questionLabel.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)        
         

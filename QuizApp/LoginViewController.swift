@@ -7,6 +7,12 @@ class LoginViewController: UIViewController {
     private var email: UITextField!
     private var password: UITextField!
     private var loginButton : UIButton!
+    private var router : AppRouterProtocol!
+    
+    convenience init(router : AppRouterProtocol) {
+        self.init()
+        self.router = router
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,9 +74,7 @@ class LoginViewController: UIViewController {
         print(pass)
         let message = DataService().login(email: name, password: pass)
         if case LoginStatus.success = message  {
-            let vc = TabViewController()
-            let customViewControllersArray : [UIViewController] = [vc]
-            self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
+            router.setTabViewController()
         }
         print(message)
      }
