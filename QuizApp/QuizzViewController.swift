@@ -15,11 +15,15 @@ class QuizzViewController: UIViewController {
     private var buttonArray: [UIButton]!
     var stackView : UIStackView!
     var delegate : PageViewDelegate?
+    var total : Int
+    var colorArray : [UIColor]
 
-    init(_question: Question, _current : UILabel, _delegate : PageViewDelegate) {
+    init(_question: Question, _current : UILabel, _delegate : PageViewDelegate, _total : Int, _array : [UIColor]) {
         self.currentPage = _current
         self.currentQuestion = _question;
         self.delegate = _delegate
+        self.total = _total
+        colorArray = _array
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,6 +42,14 @@ class QuizzViewController: UIViewController {
     
     private func buildViews() {
         view.backgroundColor = .systemBlue
+        stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        for i in 0...total-1 {
+            let currentProgress = UIProgressView(progressViewStyle: .default)
+            currentProgress.trackTintColor = colorArray[i]
+            stackView.addArrangedSubview(currentProgress)
+        }
         
         buttonArray = [UIButton]()
         
@@ -139,20 +151,16 @@ class QuizzViewController: UIViewController {
     @objc
     func buttonClicked(sender:UIButton)
     {
-        let pageController = self.parent as! PageViewController
         let greenColor = UIColor(red: 0.18, green: 0.80, blue: 0.44, alpha: 1.00)
         let redColor = UIColor(red: 0.80, green: 0.29, blue: 0.21, alpha: 1.00)
         if sender.tag == currentQuestion.correctAnswer {
             sender.backgroundColor = greenColor
-            pageController.correct += 1
-            delegate?.goToNextQuestion(_color: .green)
-            //pageController.nextPage(_color: .green)
+            delegate?.goToNextQuestion(_correct: 1)
         }
         else {
             buttonArray[currentQuestion.correctAnswer].backgroundColor = greenColor
             sender.backgroundColor = redColor
-            delegate?.goToNextQuestion(_color: .red)
-            //pageController.nextPage(_color: .red)
+            delegate?.goToNextQuestion(_correct: 0)
         }
     }
 }
