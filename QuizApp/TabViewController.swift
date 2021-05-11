@@ -1,14 +1,21 @@
 import UIKit
 
 class TabViewController: UITabBarController {
+    private var router : AppRouterProtocol!
     
-    override func viewDidLoad() {
+    convenience init(router : AppRouterProtocol) {
+        self.init()
+        self.router = router
+        setUpViews()
+    }
+    
+     func setUpViews() {
         super.viewDidLoad()
 
-        let quizzesVC = QuizzesViewController()
+        let quizzesVC = QuizzesViewController(router: router)
         quizzesVC.tabBarItem = UITabBarItem(title: "Quiz", image: UIImage(named: "Dashboard.png"), selectedImage: UIImage(named: "Quizzes.png"))
         
-        let settingsVC = SettingsViewController()
+        let settingsVC = SettingsViewController(router: router)
         settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(named: "Settings.png"), selectedImage: UIImage(named: "Settings.png"))
         
         self.viewControllers = [quizzesVC, settingsVC]

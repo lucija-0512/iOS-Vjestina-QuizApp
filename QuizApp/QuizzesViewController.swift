@@ -36,6 +36,12 @@ class QuizzesViewController: UIViewController {
     private var quizzes = [Quiz]()
     let cellIdentifier = "cellId"
     var quizzesGroupedByCategory = [(QuizCategory,Array<Quiz>)]()
+    private var router : AppRouterProtocol!
+    
+    convenience init(router : AppRouterProtocol) {
+        self.init()
+        self.router = router
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,9 +174,7 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let fetchedQuiz = quizzesGroupedByCategory[indexPath.section].1[indexPath.row]
-        let pageViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        pageViewController.quiz = fetchedQuiz
-        navigationController?.pushViewController(pageViewController, animated: true)
+        router.goToQuizViewController(quiz: fetchedQuiz)
     }
     
    

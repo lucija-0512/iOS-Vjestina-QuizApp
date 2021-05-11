@@ -7,11 +7,14 @@ class SettingsViewController: UIViewController {
     private var logOut: UIButton!
     private var router : AppRouterProtocol!
     
+    convenience init(router : AppRouterProtocol) {
+        self.init()
+        self.router = router
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.router = AppRouter(navigationController: self.navigationController!)
         buildViews()
         addConstraints()
         self.navigationController?.navigationBar.barTintColor = .systemBlue

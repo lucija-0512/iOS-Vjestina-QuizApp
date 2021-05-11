@@ -1,12 +1,11 @@
 import UIKit
-class PageViewController: UIPageViewController {
-
+class PageViewController: UIPageViewController, PageViewDelegate {
+    
     var quiz : Quiz!
     private var controllers: [UIViewController] = []
     var correct = 0
     var total = 0
     var stackView : UIStackView!
-    var progressValue : Float!
     var controllerNum = 0
     
     private var displayedIndex = 0
@@ -15,12 +14,11 @@ class PageViewController: UIPageViewController {
         super.viewDidLoad()
         
         total = quiz.questions.count
-        progressValue = Float(1)/Float(total)
         var count = 1
         for question in quiz.questions {
             let current = UILabel()
             current.text = "\(count) / \(total) "
-            let quizViewController = QuizzViewController(_question: question, _current: current)
+            let quizViewController = QuizzViewController(_question: question, _current: current, _delegate: self)
             controllers.append(quizViewController)
             count += 1
         }
@@ -50,8 +48,7 @@ class PageViewController: UIPageViewController {
         firstVC.stackView = stackView
         setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
     }
-    
-    func nextPage(_color : UIColor) {
+    func goToNextQuestion(_color : UIColor) {
         let lastProgress = UIProgressView(progressViewStyle: .default)
         lastProgress.trackTintColor = _color
         stackView.replaceView(atIndex: controllerNum, withView: lastProgress)
@@ -70,6 +67,7 @@ class PageViewController: UIPageViewController {
             return
         }
     }
+    
 }
 extension UIStackView {
     func replaceView(atIndex index: Int, withView view: UIView) {

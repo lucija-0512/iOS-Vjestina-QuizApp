@@ -14,10 +14,12 @@ class QuizzViewController: UIViewController {
     private var answer4: UIButton!
     private var buttonArray: [UIButton]!
     var stackView : UIStackView!
+    var delegate : PageViewDelegate?
 
-    init(_question: Question, _current : UILabel) {
+    init(_question: Question, _current : UILabel, _delegate : PageViewDelegate) {
         self.currentPage = _current
         self.currentQuestion = _question;
+        self.delegate = _delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -143,12 +145,14 @@ class QuizzViewController: UIViewController {
         if sender.tag == currentQuestion.correctAnswer {
             sender.backgroundColor = greenColor
             pageController.correct += 1
-            pageController.nextPage(_color: .green)
+            delegate?.goToNextQuestion(_color: .green)
+            //pageController.nextPage(_color: .green)
         }
         else {
             buttonArray[currentQuestion.correctAnswer].backgroundColor = greenColor
             sender.backgroundColor = redColor
-            pageController.nextPage(_color: .red)
+            delegate?.goToNextQuestion(_color: .red)
+            //pageController.nextPage(_color: .red)
         }
     }
 }

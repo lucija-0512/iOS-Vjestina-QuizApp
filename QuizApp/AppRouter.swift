@@ -1,10 +1,3 @@
-//
-//  AppRouter.swift
-//  QuizApp
-//
-//  Created by five on 07/05/2021.
-//
-
 import Foundation
 import UIKit
 
@@ -12,6 +5,7 @@ protocol AppRouterProtocol {
     func setStartScreen(in window : UIWindow?)
     func setTabViewController()
     func goToLoginViewController()
+    func goToQuizViewController(quiz : Quiz)
 }
 
 class AppRouter : AppRouterProtocol {
@@ -30,7 +24,7 @@ class AppRouter : AppRouterProtocol {
     }
     
     func setTabViewController() {
-        let vc = TabViewController()
+        let vc = TabViewController(router: self)
         let customViewControllersArray : [UIViewController] = [vc]
         self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
     }
@@ -41,4 +35,9 @@ class AppRouter : AppRouterProtocol {
         self.navigationController?.setViewControllers(customViewControllersArray, animated: true)
     }
   
+    func goToQuizViewController(quiz : Quiz) {
+        let pageViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageViewController.quiz = quiz
+        navigationController?.pushViewController(pageViewController, animated: true)
+    }
 }

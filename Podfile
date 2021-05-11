@@ -6,5 +6,4 @@ target 'QuizApp' do
   use_frameworks!
 pod 'PureLayout'
   # Pods for QuizApp
-pod 'SegmentedProgressView'
 end
