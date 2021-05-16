@@ -2,17 +2,19 @@ import UIKit
 
 class TabViewController: UITabBarController {
     private var router : AppRouterProtocol!
+    private var networkService : NetworkServiceProtocol!
     
-    convenience init(router : AppRouterProtocol) {
+    convenience init(router : AppRouterProtocol, networkService : NetworkServiceProtocol) {
         self.init()
         self.router = router
+        self.networkService = networkService
         setUpViews()
     }
     
      func setUpViews() {
         super.viewDidLoad()
 
-        let quizzesVC = QuizzesViewController(router: router)
+        let quizzesVC = QuizzesViewController(router: router, networkService: networkService)
         quizzesVC.tabBarItem = UITabBarItem(title: "Quiz", image: UIImage(named: "Dashboard.png"), selectedImage: UIImage(named: "Quizzes.png"))
         
         let settingsVC = SettingsViewController(router: router)

@@ -8,15 +8,16 @@ class LoginViewController: UIViewController {
     private var password: UITextField!
     private var loginButton : UIButton!
     private var router : AppRouterProtocol!
+    private var networkService : NetworkServiceProtocol!
     
-    convenience init(router : AppRouterProtocol) {
+    convenience init(router : AppRouterProtocol, networkService : NetworkServiceProtocol) {
         self.init()
         self.router = router
+        self.networkService = networkService
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         buildViews()
         addConstraints()
         let titleLabel = UILabel()
@@ -72,12 +73,31 @@ class LoginViewController: UIViewController {
         guard let pass = password.text else { return }
         print(name)
         print(pass)
-        let message = DataService().login(email: name, password: pass)
-        if case LoginStatus.success = message  {
-            router.setTabViewController()
+        
+        guard let url = URL(string: "https://iosquiz.herokuapp.com/api/session?username=\(name)&password=\(pass)") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        networkService.executeUrlRequest(request) { (result: Result<Session, RequestError>) in
+            switch result {
+                case .failure(let error):
+                    print(error)
+                    //handleRequestError(error: error)
+                case .success(let value):
+                    print(value)
+                    let defaults = UserDefaults.standard
+                    defaults.set(value.token, forKey: "Token")
+                    defaults.set(value.userId, forKey: "UserId")
+                    DispatchQueue.main.async {
+                        self.router.setTabViewController()
+                    }
+            }
         }
-        print(message)
      }
+    private func handleRequestError(error : Error) {
+        
+    }
+    
     
     private func addConstraints() {
         

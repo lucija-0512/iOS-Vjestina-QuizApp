@@ -32,15 +32,17 @@ class QuizzesViewController: UIViewController {
     private var tableView : UITableView!
     private var fact : UILabel!
     private var nbaQuestion : UILabel!
+    private var networkService : NetworkServiceProtocol!
     
     private var quizzes = [Quiz]()
     let cellIdentifier = "cellId"
     var quizzesGroupedByCategory = [(QuizCategory,Array<Quiz>)]()
     private var router : AppRouterProtocol!
     
-    convenience init(router : AppRouterProtocol) {
+    convenience init(router : AppRouterProtocol, networkService : NetworkServiceProtocol) {
         self.init()
         self.router = router
+        self.networkService = networkService
     }
     
     override func viewDidLoad() {
@@ -93,15 +95,40 @@ class QuizzesViewController: UIViewController {
     @objc
     func customAction() {
         tableView.isHidden = false
-        quizzes = DataService().fetchQuizes()
-        self.quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
-        tableView.reloadData()
+        //quizzes = DataService().fetchQuizes()
+        fetchQuizzes()
         
-        let count = quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
-        
-        fact.text = "Fun Fact"
-        nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
      }
+    
+    private func fetchQuizzes() {
+        guard let url = URL(string: "https://iosquiz.herokuapp.com/api/quizzes") else { return}
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        networkService.executeUrlRequest(request) { (result: Result<Quizzes, RequestError>) in
+            switch result {
+                        case .failure(let error):
+                            print(error)
+                            //return nil
+                            //handleRequestError(error: error)
+                        case .success(let value):
+                            //let defaults = UserDefaults.standard
+                            //let token = defaults.object(forKey: "Token") as! String
+                            //print(token)
+                            DispatchQueue.main.async {
+                                self.quizzes = value.quizzes
+                                self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
+                                self.tableView.reloadData()
+                            
+                                let count = self.quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
+                            
+                                self.fact.text = "Fun Fact"
+                                self.nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
+                            }
+                            
+                }
+        }
+    }
     
     private func addConstraints() {
         

@@ -6,6 +6,8 @@ class PageViewController: UIPageViewController, PageViewDelegate {
     var total = 0
     var controllerNum = 0
     var colorArray : [UIColor] = [UIColor]()
+    var startTime : Double!
+    var networkService : NetworkServiceProtocol!
     
     private var displayedIndex = 0
     
@@ -27,6 +29,7 @@ class PageViewController: UIPageViewController, PageViewDelegate {
         view.backgroundColor = .systemBlue
         let firstVC = getQuizViewController()
         setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
+        startTime = CFAbsoluteTimeGetCurrent()
     }
     
     func getQuizViewController() -> QuizzViewController {
@@ -54,9 +57,38 @@ class PageViewController: UIPageViewController, PageViewDelegate {
             setViewControllers([nextViewController], direction: .forward, animated: true, completion: nil)
         }
         else {
+            sendResult()
             let targetController = QuizResultViewController(_correct: correct, _total : total)
             navigationController?.pushViewController(targetController, animated: true)
             return
+        }
+    }
+    
+    func sendResult() {
+        
+        let diff = CFAbsoluteTimeGetCurrent() - startTime
+        guard let url = URL(string: "https://iosquiz.herokuapp.com/api/result") else { return}
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let defaults = UserDefaults.standard
+        let token = defaults.object(forKey: "Token") as! String
+        let userId = defaults.object(forKey: "UserId") as! Int
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        let json: [String: Any] = ["quiz_id": quiz.id,
+                                   "user_id": userId,
+                                   "time": diff,
+                                   "no_of_correct": correct]
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        request.httpBody = jsonData
+        
+        networkService.executeUrlRequest(request) { (result: Result<Quizzes, RequestError>) in
+            switch result {
+                        case .failure(let error):
+                            print(error)
+                        case .success(let value):
+                            print(value)
+                }
         }
     }
 }
