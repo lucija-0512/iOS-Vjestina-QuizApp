@@ -8,6 +8,7 @@ class PageViewController: UIPageViewController, PageViewDelegate {
     var colorArray : [UIColor] = [UIColor]()
     var startTime : Double!
     var networkService : NetworkServiceProtocol!
+    var router : AppRouterProtocol!
     
     private var displayedIndex = 0
     
@@ -58,8 +59,7 @@ class PageViewController: UIPageViewController, PageViewDelegate {
         }
         else {
             sendResult()
-            let targetController = QuizResultViewController(_correct: correct, _total : total)
-            navigationController?.pushViewController(targetController, animated: true)
+            router.goToQuizResultViewController(correct : correct, total : total, quizId: quiz.id)
             return
         }
     }
@@ -80,15 +80,22 @@ class PageViewController: UIPageViewController, PageViewDelegate {
                                    "time": diff,
                                    "no_of_correct": correct]
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        print(json)
         request.httpBody = jsonData
         
-        networkService.executeUrlRequest(request) { (result: Result<Quizzes, RequestError>) in
+        networkService.executeUrlPostRequest(request) { (result: ServerResponse) in
             switch result {
-                        case .failure(let error):
-                            print(error)
-                        case .success(let value):
-                            print(value)
-                }
+                case .unauthorized:
+                    print("401 UNAUTHORIZED")
+                case .forbidden:
+                    print("403 FORBIDDEN ")
+                case .notFound:
+                    print("404 NOT FOUND")
+                case .badRequest:
+                    print("400 BAD REQUEST")
+                case .ok:
+                    print("200 OK")
+            }
         }
     }
 }
