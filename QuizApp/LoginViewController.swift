@@ -8,12 +8,12 @@ class LoginViewController: UIViewController {
     private var password: UITextField!
     private var loginButton : UIButton!
     private var router : AppRouterProtocol!
-    private var networkService : NetworkServiceProtocol!
+    private var loginUseCase : LoginUseCaseProtocol!
     
-    convenience init(router : AppRouterProtocol, networkService : NetworkServiceProtocol) {
+    convenience init(router : AppRouterProtocol, loginUseCase : LoginUseCaseProtocol) {
         self.init()
         self.router = router
-        self.networkService = networkService
+        self.loginUseCase = loginUseCase
     }
     
     override func viewDidLoad() {
@@ -74,30 +74,8 @@ class LoginViewController: UIViewController {
         print(name)
         print(pass)
         
-        guard let url = URL(string: "https://iosquiz.herokuapp.com/api/session?username=\(name)&password=\(pass)") else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        networkService.executeUrlRequest(request) { (result: Result<Session, RequestError>) in
-            switch result {
-                case .failure(let error):
-                    print(error)
-                    //handleRequestError(error: error)
-                case .success(let value):
-                    print(value)
-                    let defaults = UserDefaults.standard
-                    defaults.set(value.token, forKey: "Token")
-                    defaults.set(value.userId, forKey: "UserId")
-                    DispatchQueue.main.async {
-                        self.router.setTabViewController()
-                    }
-            }
-        }
+        loginUseCase.checkLogin(name: name, password: pass, router: router)
      }
-    private func handleRequestError(error : Error) {
-        
-    }
-    
     
     private func addConstraints() {
         

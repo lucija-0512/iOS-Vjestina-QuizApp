@@ -5,7 +5,7 @@ class LeaderboardViewController: UIViewController {
     private var tableView : UITableView!
     private var dismissButton : UIButton!
     private var titleLabel : UILabel!
-    private var result : [LeaderboardResult] = []
+    private var result : [LeaderboardResult]!
     
     let cellIdentifier = "cellIdentifier"
     convenience init(_result : [LeaderboardResult]) {
@@ -52,7 +52,6 @@ class LeaderboardViewController: UIViewController {
     
     @objc
     func customAction(_ sender : UIBarButtonItem!) {
-        self.navigationController?.isNavigationBarHidden = true
         self.dismiss(animated: true, completion: nil)
      }
 
