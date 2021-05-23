@@ -9,7 +9,7 @@ class QuizzesUseCase : QuizzesUseCaseProtocol {
         self.networkService = networkService
     }
    
-    func fetchQuizzes(completion: @escaping (Quizzes)->() ) {
+    func fetchQuizzes(completion: @escaping (Quizzes)-> Void ) {
         guard let url = URL(string: "https://iosquiz.herokuapp.com/api/quizzes") else { return}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

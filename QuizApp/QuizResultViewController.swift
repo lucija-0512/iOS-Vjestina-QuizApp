@@ -9,12 +9,12 @@ class QuizResultViewController: UIViewController {
     private var quizId : Int
     private var quizResultUseCase : QuizResultUseCaseProtocol!
     
-    init(_correct : Int, _total : Int, _router : AppRouterProtocol, _quizId : Int, _quizResultUseCase : QuizResultUseCaseProtocol) {
+    init(correct : Int, total : Int, router : AppRouterProtocol, quizId : Int, quizResultUseCase : QuizResultUseCaseProtocol) {
         self.result = UILabel()
-        self.result.text = "\(_correct) / \(_total) "
-        self.router = _router
-        self.quizId = _quizId
-        self.quizResultUseCase = _quizResultUseCase
+        self.result.text = "\(correct) / \(total) "
+        self.router = router
+        self.quizId = quizId
+        self.quizResultUseCase = quizResultUseCase
         super.init(nibName: nil, bundle: nil)
     }
     

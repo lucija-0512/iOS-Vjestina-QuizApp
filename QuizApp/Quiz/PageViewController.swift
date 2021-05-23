@@ -36,7 +36,7 @@ class PageViewController: UIPageViewController, PageViewDelegate {
     func getQuizViewController() -> QuizzViewController {
         let current = UILabel()
         current.text = "\(controllerNum + 1) / \(total) "
-        let quizViewController = QuizzViewController(_question: quiz.questions[controllerNum], _current: current, _delegate: self, _total: total, _array: colorArray)
+        let quizViewController = QuizzViewController(question: quiz.questions[controllerNum], current: current, delegate: self, total: total, array: colorArray)
         return quizViewController
     }
     
@@ -59,7 +59,8 @@ class PageViewController: UIPageViewController, PageViewDelegate {
         }
         else {
             pageUseCase.sendResult(startTime: startTime, quizId: quiz.id, correct: correct)
-            router.goToQuizResultViewController(correct : correct, total : total, quizId: quiz.id)
+            let result = QuizResult(correct : correct, total : total, quizId : quiz.id)
+            router.goToQuizResultViewController(result : result)
             return
         }
     }

@@ -1,3 +1,3 @@
 protocol QuizzesUseCaseProtocol {
-    func fetchQuizzes(completion: @escaping (Quizzes)->() )
+    func fetchQuizzes(completion: @escaping (Quizzes)-> Void )
 }

@@ -8,9 +8,9 @@ class LeaderboardViewController: UIViewController {
     private var result : [LeaderboardResult]!
     
     let cellIdentifier = "cellIdentifier"
-    convenience init(_result : [LeaderboardResult]) {
+    convenience init(result : [LeaderboardResult]) {
         self.init()
-        self.result = _result
+        self.result = result
     }
     override func viewDidLoad() {
         super.viewDidLoad()

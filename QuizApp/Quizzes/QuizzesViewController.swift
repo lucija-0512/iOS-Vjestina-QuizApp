@@ -95,8 +95,9 @@ class QuizzesViewController: UIViewController {
     @objc
     func customAction() {
         tableView.isHidden = false
-        quizzesUseCase.fetchQuizzes()  { quizzes in
+        quizzesUseCase.fetchQuizzes()  {[weak self] quizzes in
             DispatchQueue.main.async {
+                guard let self = self else { return }
                 self.quizzes = quizzes.quizzes
                 self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
                 self.tableView.reloadData()

@@ -28,7 +28,22 @@ class NetworkService : NetworkServiceProtocol {
         dataTask.resume()
     }
     
-    func executeUrlPostRequest(_ request: URLRequest, completionHandler: @escaping (ServerResponse) -> Void) {
+    func sendResult(_ result: QuizComplete, completionHandler: @escaping (ServerResponse) -> Void) {
+        guard let url = URL(string: "https://iosquiz.herokuapp.com/api/result") else { return}
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let defaults = UserDefaults.standard
+        let token = defaults.object(forKey: "Token") as! String
+        let userId = defaults.object(forKey: "UserId") as! Int
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        let json: [String: Any] = ["quiz_id": result.quizId,
+                                   "user_id": userId,
+                                   "time": result.time,
+                                   "no_of_correct": result.correct]
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        print(json)
+        request.httpBody = jsonData
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in
         
             guard let httpResponse = response as? HTTPURLResponse,

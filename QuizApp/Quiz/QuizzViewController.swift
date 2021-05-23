@@ -18,12 +18,12 @@ class QuizzViewController: UIViewController {
     var total : Int
     var colorArray : [UIColor]
 
-    init(_question: Question, _current : UILabel, _delegate : PageViewDelegate, _total : Int, _array : [UIColor]) {
-        self.currentPage = _current
-        self.currentQuestion = _question;
-        self.delegate = _delegate
-        self.total = _total
-        colorArray = _array
+    init(question: Question, current : UILabel, delegate : PageViewDelegate, total : Int, array : [UIColor]) {
+        self.currentPage = current
+        self.currentQuestion = question;
+        self.delegate = delegate
+        self.total = total
+        colorArray = array
         super.init(nibName: nil, bundle: nil)
     }
     
