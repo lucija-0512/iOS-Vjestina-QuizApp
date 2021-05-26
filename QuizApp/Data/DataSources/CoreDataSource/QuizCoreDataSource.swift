@@ -10,7 +10,6 @@ struct QuizCoreDataSource: QuizCoreDataSourceProtocol {
     
     func fetchQuizzesFromCoreData() -> [Quiz] {
         let request: NSFetchRequest<CDQuiz> = CDQuiz.fetchRequest()
-
         do {
             return try coreDataContext.fetch(request).map { Quiz(with: $0) }
         } catch {
@@ -47,7 +46,6 @@ struct QuizCoreDataSource: QuizCoreDataSourceProtocol {
     private func fetchQuiz(withId id: Int) throws -> CDQuiz? {
         let request: NSFetchRequest<CDQuiz> = CDQuiz.fetchRequest()
         request.predicate = NSPredicate(format: "%K == %u", #keyPath(CDQuiz.identifier), id)
-
         let cdResponse = try coreDataContext.fetch(request)
         return cdResponse.first
     }

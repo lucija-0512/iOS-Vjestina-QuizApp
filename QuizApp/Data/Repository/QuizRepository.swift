@@ -9,13 +9,9 @@ class QuizRepository: QuizRepositoryProtocol {
     }
 
     func fetchRemoteData() throws {
-        print("in repository")
         networkDataSource.fetchQuizzes()  { quizzes in
             self.coreDataSource.saveNewQuizzes(quizzes)
                }
-        //let quizzes = try networkDataSource.fetchQuizzes()
-        print("save in repository")
-        
     }
 
     func fetchLocalData() -> [Quiz] {

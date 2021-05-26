@@ -11,12 +11,9 @@ extension Quiz {
         level = Int(entity.level)
         imageUrl = entity.image
         var temp = [Question]()
-        //questions = [Question]()
         for question in entity.questions{
             temp.append(Question(with: question))
         }
-        print("temp")
-        print(temp)
         questions = temp
     }
 
@@ -27,16 +24,12 @@ extension Quiz {
         entity.category = category.rawValue
         entity.level = Int32(level)
         entity.image = imageUrl
-        //print("questions")
-        //print(questions)
-        //var temp = [CDQuestion]()
+        entity.questions.removeAll()
         for question in questions {
             let cdQuestion = CDQuestion(context: context)
             question.populate(cdQuestion)
             entity.questions.insert(cdQuestion)
         }
-        //entity.questions = NSSet(objects: temp)
-        
     }
 
 }

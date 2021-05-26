@@ -18,7 +18,6 @@ extension CDQuestion {
 
     @NSManaged public var identifier: Int32
     @NSManaged public var question: String
-    //@NSManaged public var answers: NSObject
     @NSManaged public var answers: [NSString]
     @NSManaged public var correct: Int32
     @NSManaged public var quiz: CDQuiz

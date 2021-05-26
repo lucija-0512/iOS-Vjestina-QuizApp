@@ -45,7 +45,7 @@ class NetworkService : NetworkServiceProtocol {
         print(json)
         request.httpBody = jsonData
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, err in
-        
+            
             guard let httpResponse = response as? HTTPURLResponse,
               let serverCode = ServerResponse(rawValue: httpResponse.statusCode) else { return }
             DispatchQueue.main.async {
@@ -55,23 +55,7 @@ class NetworkService : NetworkServiceProtocol {
         dataTask.resume()
     }
     
-//    func fetchQuizzes() -> [Quiz] {
-//        var quizzes = [Quiz]()
-//        guard let url = URL(string: "https://iosquiz.herokuapp.com/api/quizzes") else { return quizzes}
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        executeUrlRequest(request) { (result: Result<Quizzes, RequestError>) in
-//            switch result {
-//                        case .failure(let error):
-//                            print(error)
-//                        case .success(let value):
-//                            print(value.quizzes)
-//                            quizzes = value.quizzes
-//                }
-//        }
-//        return quizzes
-//    }
+
     func fetchQuizzes(completion: @escaping ([Quiz])-> Void) {
         guard let url = URL(string: "https://iosquiz.herokuapp.com/api/quizzes") else { return}
                 var request = URLRequest(url: url)
@@ -82,7 +66,6 @@ class NetworkService : NetworkServiceProtocol {
                                 case .failure(let error):
                                     print(error)
                                 case .success(let value):
-                                    //print(value.quizzes)
                                     completion(value.quizzes)
                         }
                 }
