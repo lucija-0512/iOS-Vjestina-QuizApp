@@ -19,13 +19,17 @@ class AppRouter : AppRouterProtocol {
     private var quizResultUseCase: QuizResultUseCaseProtocol
     private var loginUseCase : LoginUseCaseProtocol
     private var quizzesUseCase : QuizzesUseCaseProtocol
+    private var quizRepository : QuizRepositoryProtocol
+    
     
     init(navigationController : UINavigationController) {
         self.navigationController = navigationController
         pageUseCase = PageUseCase(networkService: networkService)
         quizResultUseCase = QuizResultUseCase(networkService: networkService)
         loginUseCase = LoginUseCase(networkService: networkService)
-        quizzesUseCase = QuizzesUseCase(networkService: networkService)
+        let coreDataContext = CoreDataStack(modelName: "Model").managedContext
+        quizRepository = QuizRepository(networkDataSource: networkService, coreDataSource: QuizCoreDataSource(coreDataContext: coreDataContext))
+        quizzesUseCase = QuizzesUseCase(quizRepository: quizRepository)
     }
     
     func setStartScreen(in window: UIWindow?) {

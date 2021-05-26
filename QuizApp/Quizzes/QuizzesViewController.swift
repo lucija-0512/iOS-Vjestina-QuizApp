@@ -28,7 +28,6 @@ class TableHeader : UITableViewHeaderFooterView {
 }
 class QuizzesViewController: UIViewController {
 
-    private var showButton : UIButton!
     private var tableView : UITableView!
     private var fact : UILabel!
     private var nbaQuestion : UILabel!
@@ -45,24 +44,22 @@ class QuizzesViewController: UIViewController {
         self.quizzesUseCase = quizzesUseCase
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad(){
         super.viewDidLoad()
         buildViews()
         addConstraints()
+        do {
+            try customAction()
+        }
+        catch {
+            print("Error")
+        }
         
         self.navigationController?.navigationBar.barTintColor = .systemBlue
     }
     
     private func buildViews() {
         view.backgroundColor = .systemBlue
-        
-        showButton = UIButton()
-        showButton.setTitle("Get Quizz", for: .normal)
-        showButton.backgroundColor = .white
-        showButton.layer.cornerRadius = 20.0
-        showButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: 20.0)
-        showButton.setTitleColor(.systemBlue, for: .normal)
-        showButton.addTarget(self, action: #selector(customAction), for: .touchUpInside)
         
         fact = UILabel()
         fact.textColor = .white
@@ -76,7 +73,6 @@ class QuizzesViewController: UIViewController {
         
         
         tableView = UITableView()
-        tableView.isHidden = true
         tableView.rowHeight = 150
         tableView.backgroundColor = .clear
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -85,41 +81,38 @@ class QuizzesViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        view.addSubview(showButton)
         view.addSubview(tableView)
         view.addSubview(fact)
         view.addSubview(nbaQuestion)
         view.bringSubviewToFront(tableView)
     }
     
-    @objc
-    func customAction() {
-        tableView.isHidden = false
-        quizzesUseCase.fetchQuizzes()  {[weak self] quizzes in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                self.quizzes = quizzes.quizzes
-                self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
-                self.tableView.reloadData()
-            
+    func customAction() throws{
+        try quizzesUseCase.refreshData()
+        self.quizzes = quizzesUseCase.getQuizzes()
+        //print(quizzes)
+        self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
+        //                self.tableView.reloadData()
+//        quizzesUseCase.fetchQuizzes()  {[weak self] quizzes in
+//            DispatchQueue.main.async {
+//                guard let self = self else { return }
+//                self.quizzes = quizzes.quizzes
+//                self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
+//                self.tableView.reloadData()
+//
                 let count = self.quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
-            
+//
                 self.fact.text = "Fun Fact"
                 self.nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
-            }
-        }
+//            }
+//        }
      }
     
     
     private func addConstraints() {
         
-        showButton.autoPinEdge(toSuperviewSafeArea: .top, withInset: 30)
-        showButton.autoAlignAxis(toSuperviewMarginAxis: .vertical)
-        showButton.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 50)
-        showButton.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 50)
-        showButton.autoSetDimension(.height, toSize: 50)
         
-        fact.autoPinEdge(.top, to: .bottom, of: showButton, withOffset: 20)
+        fact.autoPinEdge(toSuperviewSafeArea: .top, withInset: 30)
         fact.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
         fact.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 10)
         
