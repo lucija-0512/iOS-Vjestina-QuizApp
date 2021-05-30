@@ -70,7 +70,6 @@ struct QuizCoreDataSource: QuizCoreDataSourceProtocol {
     private func deleteAllQuizzesExcept(withId ids: [Int]) throws {
         let request: NSFetchRequest<CDQuiz> = CDQuiz.fetchRequest()
         request.predicate = NSPredicate(format: "NOT %K IN %@", #keyPath(CDQuiz.identifier), ids)
-
         let quizzesToDelete = try coreDataContext.fetch(request)
         quizzesToDelete.forEach { coreDataContext.delete($0) }
         try coreDataContext.save()

@@ -66,7 +66,6 @@ class SearchQuizViewController: UIViewController{
     @objc
     func searchQuizzes() {
         let quizzes = quizzesUseCase.filterQuizzes(name: searchBarView.searchBar.text)
-        print(quizzes)
         quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
         tableView.reloadData()
         }

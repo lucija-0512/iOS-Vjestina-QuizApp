@@ -88,8 +88,8 @@ class QuizzesViewController: UIViewController {
     }
     
     func customAction() throws{
-        try quizzesUseCase.refreshData()
         quizzes = quizzesUseCase.getQuizzes()
+        try quizzesUseCase.refreshData()
         quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
         let count = quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
         fact.text = "Fun Fact"
