@@ -7,7 +7,7 @@ class SearchQuizViewController: UIViewController{
     private var tableView : UITableView!
     private var quizzesUseCase : QuizzesUseCaseProtocol!
     private var router : AppRouterProtocol!
-    private var searchBar : UISearchBar!
+    private var searchBarView : SearchBarView!
     var quizzesGroupedByCategory = [(QuizCategory,Array<Quiz>)]()
     let cellIdentifier = "searchCellId"
     let headerIdentifier = "headerId"
@@ -21,6 +21,7 @@ class SearchQuizViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         buildViews()
+        addConstraints()
     }
 
     func buildViews() {
@@ -35,20 +36,12 @@ class SearchQuizViewController: UIViewController{
         tableView.delegate = self
         tableView.backgroundColor = .clear
         
+        searchBarView = SearchBarView()
+        searchBarView.searchButton.addTarget(self, action: #selector(searchQuizzes), for: .touchUpInside)
+        
         view.addSubview(tableView)
         
-        searchBar = UISearchBar(frame: CGRect(x: 0.0, y: 0.0, width: 50, height: 50))
-        searchBar.delegate = self
-        searchBar.placeholder = "Search Quizzes"
-        searchBar.showsSearchResultsButton = true
-        searchBar.backgroundColor = .clear
-        
-        definesPresentationContext = true
-        
-        tableView.tableHeaderView = searchBar
-        
-        addConstraints()
-        
+        tableView.tableHeaderView = searchBarView
     }
 
     private func addConstraints() {
@@ -57,7 +50,6 @@ class SearchQuizViewController: UIViewController{
         tableView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 10)
         tableView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 30)
         tableView.autoPinEdge(toSuperviewEdge: .bottom)
-        
     }
     
     private func groupByCategory(quizzesList: [Quiz]) -> [(QuizCategory,Array<Quiz>)] {
@@ -71,9 +63,13 @@ class SearchQuizViewController: UIViewController{
         return quizzesGroupedByCategory.compactMap{$0}
       }
     
-    
-
-
+    @objc
+    func searchQuizzes() {
+        let quizzes = quizzesUseCase.filterQuizzes(name: searchBarView.searchBar.text)
+        print(quizzes)
+        quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
+        tableView.reloadData()
+        }
 }
 
 extension SearchQuizViewController: UITableViewDataSource, UITableViewDelegate {
@@ -115,15 +111,3 @@ extension SearchQuizViewController: UITableViewDataSource, UITableViewDelegate {
         router.goToQuizViewController(quiz: fetchedQuiz)
     }
 }
-
-extension SearchQuizViewController : UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let quizzes = quizzesUseCase.filterQuizzes(name: searchBar.text)
-        quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
-        print("hello")
-        tableView.reloadData()
-        }
-
-}
-
