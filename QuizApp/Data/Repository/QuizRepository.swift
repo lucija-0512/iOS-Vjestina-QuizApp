@@ -13,6 +13,10 @@ class QuizRepository: QuizRepositoryProtocol {
             self.coreDataSource.saveNewQuizzes(quizzes)
                }
     }
+    
+    func filterLocalData(name: String?) -> [Quiz] {
+        coreDataSource.filterQuizzesFromCoreData(name: name)
+    }
 
     func fetchLocalData() -> [Quiz] {
         coreDataSource.fetchQuizzesFromCoreData()

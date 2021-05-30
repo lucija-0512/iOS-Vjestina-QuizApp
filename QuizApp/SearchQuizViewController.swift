@@ -1,42 +1,16 @@
-import UIKit
-import PureLayout
 
-class TableHeader : UITableViewHeaderFooterView {
-    
-     var label : UILabel = {
-        let label = UILabel()
-        label.textColor = .yellow
-        label.font = .boldSystemFont(ofSize: 22)
-        return label
-    }()
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(label)
-        contentView.backgroundColor = .systemBlue
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        label.sizeToFit()
-    }
-    
-}
-class QuizzesViewController: UIViewController {
+import UIKit
+import Foundation
+
+class SearchQuizViewController: UIViewController{
 
     private var tableView : UITableView!
-    private var fact : UILabel!
-    private var nbaQuestion : UILabel!
     private var quizzesUseCase : QuizzesUseCaseProtocol!
-    
-    private var quizzes = [Quiz]()
-    let cellIdentifier = "cellId"
-    var quizzesGroupedByCategory = [(QuizCategory,Array<Quiz>)]()
     private var router : AppRouterProtocol!
+    private var searchBar : UISearchBar!
+    var quizzesGroupedByCategory = [(QuizCategory,Array<Quiz>)]()
+    let cellIdentifier = "searchCellId"
+    let headerIdentifier = "headerId"
     
     convenience init(router : AppRouterProtocol, quizzesUseCase : QuizzesUseCaseProtocol) {
         self.init()
@@ -44,73 +18,46 @@ class QuizzesViewController: UIViewController {
         self.quizzesUseCase = quizzesUseCase
     }
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
         buildViews()
-        addConstraints()
-        do {
-            try customAction()
-        }
-        catch {
-            print("Error")
-        }
-        
-        self.navigationController?.navigationBar.barTintColor = .systemBlue
     }
-    
-    private func buildViews() {
+
+    func buildViews() {
         view.backgroundColor = .systemBlue
-        
-        fact = UILabel()
-        fact.textColor = .white
-        fact.font = UIFont.boldSystemFont(ofSize: 18.0)
-        
-        nbaQuestion = UILabel()
-        nbaQuestion.textColor = .white
-        nbaQuestion.font = UIFont.systemFont(ofSize: 18.0)
-        nbaQuestion.lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
-        nbaQuestion.numberOfLines = 0
-        
         
         tableView = UITableView()
         tableView.rowHeight = 150
-        tableView.backgroundColor = .clear
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: "header")
+        tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
         tableView.isUserInteractionEnabled = true
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .clear
         
         view.addSubview(tableView)
-        view.addSubview(fact)
-        view.addSubview(nbaQuestion)
-        view.bringSubviewToFront(tableView)
+        
+        searchBar = UISearchBar(frame: CGRect(x: 0.0, y: 0.0, width: 50, height: 50))
+        searchBar.delegate = self
+        searchBar.placeholder = "Search Quizzes"
+        searchBar.showsSearchResultsButton = true
+        searchBar.backgroundColor = .clear
+        
+        definesPresentationContext = true
+        
+        tableView.tableHeaderView = searchBar
+        
+        addConstraints()
+        
     }
-    
-    func customAction() throws{
-        try quizzesUseCase.refreshData()
-        quizzes = quizzesUseCase.getQuizzes()
-        quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
-        let count = quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
-        fact.text = "Fun Fact"
-        nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
-     }
-    
-    
+
     private func addConstraints() {
-        fact.autoPinEdge(toSuperviewSafeArea: .top, withInset: 30)
-        fact.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
-        fact.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 10)
-        
-        nbaQuestion.autoPinEdge(.top, to: .bottom, of: fact, withOffset: 10)
-        nbaQuestion.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 20)
-        nbaQuestion.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 20)
-        
-        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 10)
         tableView.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 10)
-        tableView.autoPinEdge(.top, to: .bottom, of: nbaQuestion, withOffset: 10)
+        tableView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 30)
         tableView.autoPinEdge(toSuperviewEdge: .bottom)
+        
     }
     
     private func groupByCategory(quizzesList: [Quiz]) -> [(QuizCategory,Array<Quiz>)] {
@@ -123,10 +70,14 @@ class QuizzesViewController: UIViewController {
         }
         return quizzesGroupedByCategory.compactMap{$0}
       }
+    
+    
 
 
 }
-extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
+
+extension SearchQuizViewController: UITableViewDataSource, UITableViewDelegate {
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return quizzesGroupedByCategory.count
     }
@@ -149,7 +100,7 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
     }
         
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! TableHeader
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerIdentifier) as! TableHeader
         header.label.text = quizzesGroupedByCategory[section].0.rawValue
         return header
     }
@@ -163,6 +114,16 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
         let fetchedQuiz = quizzesGroupedByCategory[indexPath.section].1[indexPath.row]
         router.goToQuizViewController(quiz: fetchedQuiz)
     }
-    
-   
 }
+
+extension SearchQuizViewController : UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let quizzes = quizzesUseCase.filterQuizzes(name: searchBar.text)
+        quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
+        print("hello")
+        tableView.reloadData()
+        }
+
+}
+

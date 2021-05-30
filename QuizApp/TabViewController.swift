@@ -17,10 +17,13 @@ class TabViewController: UITabBarController {
         let quizzesVC = QuizzesViewController(router: router, quizzesUseCase: quizzesUseCase)
         quizzesVC.tabBarItem = UITabBarItem(title: "Quiz", image: UIImage(named: "Dashboard.png"), selectedImage: UIImage(named: "Quizzes.png"))
         
+        let searchVC = SearchQuizViewController(router: router, quizzesUseCase: quizzesUseCase)
+        searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "Vector.png"), selectedImage: UIImage(named: "Vector.png"))
+        
         let settingsVC = SettingsViewController(router: router)
         settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(named: "Settings.png"), selectedImage: UIImage(named: "Settings.png"))
         
-        self.viewControllers = [quizzesVC, settingsVC]
+        self.viewControllers = [quizzesVC, searchVC, settingsVC]
         
         let titleLabel = UILabel()
         titleLabel.text = "PopQuiz"

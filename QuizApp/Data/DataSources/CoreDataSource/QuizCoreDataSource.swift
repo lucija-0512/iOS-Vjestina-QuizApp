@@ -18,6 +18,23 @@ struct QuizCoreDataSource: QuizCoreDataSourceProtocol {
         }
     }
     
+    func filterQuizzesFromCoreData(name: String?) -> [Quiz] {
+        let request: NSFetchRequest<CDQuiz> = CDQuiz.fetchRequest()
+        var namePredicate = NSPredicate(value: true)
+
+        if let text = name, !text.isEmpty {
+            namePredicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(CDQuiz.title), text)
+        }
+
+        request.predicate = namePredicate
+        do {
+            return try coreDataContext.fetch(request).map { Quiz(with: $0) }
+        } catch {
+            print("Error when fetching quizzes from core data: \(error)")
+            return []
+        }
+    }
+    
     func saveNewQuizzes(_ quizzes: [Quiz]) {
         do {
             let newIds = quizzes.map { $0.id }

@@ -53,6 +53,7 @@
 		52AC897D265D776000D60E1C /* Question+CD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AC897C265D776000D60E1C /* Question+CD.swift */; };
 		52AC8982265D972F00D60E1C /* QuizRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AC8981265D972F00D60E1C /* QuizRepositoryProtocol.swift */; };
 		52AC8985265D992F00D60E1C /* QuizCoreDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AC8984265D992F00D60E1C /* QuizCoreDataSourceProtocol.swift */; };
+		52AC898B265EEFDD00D60E1C /* SearchQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AC898A265EEFDD00D60E1C /* SearchQuizViewController.swift */; };
 		52E36E3C2634CB7D0026412B /* QuizzViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E36E3B2634CB7D0026412B /* QuizzViewController.swift */; };
 		52FABF5C264AED9E00521D40 /* PageViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FABF5B264AED9E00521D40 /* PageViewDelegate.swift */; };
 		52FAE2722637EE8600608374 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FAE2712637EE8600608374 /* TabViewController.swift */; };
@@ -110,6 +111,7 @@
 		52AC897C265D776000D60E1C /* Question+CD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Question+CD.swift"; sourceTree = "<group>"; };
 		52AC8981265D972F00D60E1C /* QuizRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRepositoryProtocol.swift; sourceTree = "<group>"; };
 		52AC8984265D992F00D60E1C /* QuizCoreDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCoreDataSourceProtocol.swift; sourceTree = "<group>"; };
+		52AC898A265EEFDD00D60E1C /* SearchQuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQuizViewController.swift; sourceTree = "<group>"; };
 		52E36E3B2634CB7D0026412B /* QuizzViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizzViewController.swift; sourceTree = "<group>"; };
 		52FABF5B264AED9E00521D40 /* PageViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewDelegate.swift; sourceTree = "<group>"; };
 		52FAE2712637EE8600608374 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				529EB90526375CA700DAC81F /* SettingsViewController.swift */,
 				52FAE2712637EE8600608374 /* TabViewController.swift */,
 				5280B239264567D400CF84B6 /* AppRouter.swift */,
+				52AC898A265EEFDD00D60E1C /* SearchQuizViewController.swift */,
 			);
 			path = QuizApp;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				52AC8985265D992F00D60E1C /* QuizCoreDataSourceProtocol.swift in Sources */,
 				52AC8971265D6E5C00D60E1C /* CDQuiz+CoreDataProperties.swift in Sources */,
 				52454DEC2651B13000309894 /* LoginUseCaseProtocol.swift in Sources */,
+				52AC898B265EEFDD00D60E1C /* SearchQuizViewController.swift in Sources */,
 				52AC8982265D972F00D60E1C /* QuizRepositoryProtocol.swift in Sources */,
 				52AC8960265D5D0A00D60E1C /* CoreDataStack.swift in Sources */,
 				5205C8B52626093900E6AAD3 /* CustomTableViewCell.swift in Sources */,

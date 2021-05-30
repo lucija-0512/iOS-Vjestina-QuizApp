@@ -16,4 +16,8 @@ class QuizzesUseCase : QuizzesUseCaseProtocol {
     func getQuizzes() -> [Quiz] {
         quizRepository.fetchLocalData()
     }
+    
+    func filterQuizzes(name: String?) -> [Quiz] {
+        quizRepository.filterLocalData(name: name)
+    }
 }
