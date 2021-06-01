@@ -1,5 +1,5 @@
 protocol QuizRepositoryProtocol {
-    func fetchRemoteData() throws
+    func fetchRemoteData(completion: @escaping () -> Void)
     func fetchLocalData() -> [Quiz]
     func filterLocalData(name: String?) -> [Quiz]
 }

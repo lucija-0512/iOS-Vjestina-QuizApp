@@ -8,9 +8,10 @@ class QuizRepository: QuizRepositoryProtocol {
         self.coreDataSource = coreDataSource
     }
 
-    func fetchRemoteData() throws {
+    func fetchRemoteData(completion: @escaping () -> Void) {
         networkDataSource.fetchQuizzes()  { quizzes in
             self.coreDataSource.saveNewQuizzes(quizzes)
+            completion()
                }
     }
     

@@ -89,11 +89,16 @@ class QuizzesViewController: UIViewController {
     
     func customAction() throws{
         quizzes = quizzesUseCase.getQuizzes()
-        try quizzesUseCase.refreshData()
-        quizzesGroupedByCategory = groupByCategory(quizzesList: quizzes)
-        let count = quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
-        fact.text = "Fun Fact"
-        nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
+        quizzesUseCase.refreshData() { () in
+            self.quizzes = self.quizzesUseCase.getQuizzes()
+            self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
+            let count = self.quizzes.map{$0.questions}.flatMap{$0}.filter{$0.question.contains("NBA")}.count
+            DispatchQueue.main.sync{
+                self.fact.text = "Fun Fact"
+                self.nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
+            }
+        }
+        
      }
     
     

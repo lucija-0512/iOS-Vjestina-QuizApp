@@ -1,6 +1,8 @@
 import UIKit
 
 class QuizzesUseCase : QuizzesUseCaseProtocol {
+    
+    
 
     private let quizRepository: QuizRepositoryProtocol
 
@@ -9,8 +11,12 @@ class QuizzesUseCase : QuizzesUseCaseProtocol {
         self.quizRepository = quizRepository
     }
    
-    func refreshData() throws {
-        try quizRepository.fetchRemoteData()
+    func refreshData(completion: @escaping () -> Void) {
+        quizRepository.fetchRemoteData() { () in
+            completion()
+        }
+        
+        
     }
 
     func getQuizzes() -> [Quiz] {

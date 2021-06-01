@@ -1,5 +1,5 @@
 protocol QuizzesUseCaseProtocol {
-    func refreshData() throws
+    func refreshData(completion: @escaping () -> Void)
     func getQuizzes() -> [Quiz]
     func filterQuizzes(name: String?) -> [Quiz] 
 }
