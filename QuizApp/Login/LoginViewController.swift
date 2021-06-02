@@ -9,6 +9,7 @@ class LoginViewController: UIViewController {
     private var loginButton : UIButton!
     private var router : AppRouterProtocol!
     private var loginUseCase : LoginUseCaseProtocol!
+    private var titleLabel : UILabel!
     
     convenience init(router : AppRouterProtocol, loginUseCase : LoginUseCaseProtocol) {
         self.init()
@@ -20,16 +21,57 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         buildViews()
         addConstraints()
-        let titleLabel = UILabel()
-        titleLabel.text = "PopQuiz"
-        titleLabel.textColor = .white
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 40.0)
-        navigationItem.titleView = titleLabel
+        
         self.navigationController?.navigationBar.barTintColor = .systemBlue
     }
+     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0,
+            options: .curveEaseOut,
+            animations: {
+                self.titleLabel.transform = .identity
+                self.titleLabel.alpha = 1
+            })
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0,
+            options: .curveEaseOut,
+            animations: {
+                self.email.transform = .identity
+                self.email.alpha = 1
+            }
+        )
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0.25,
+            options: .curveEaseOut,
+            animations: {
+                self.password.transform = .identity
+                self.password.alpha = 1
+            }
+        )
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0.5,
+            options: .curveEaseOut,
+            animations: {
+                self.loginButton.transform = .identity
+                self.loginButton.alpha = 1
+            }
+        )
+}
     
     private func buildViews() {
         view.backgroundColor = .systemBlue
+        titleLabel = UILabel()
+        titleLabel.text = "PopQuiz"
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 40.0)
+        titleLabel.transform = titleLabel.transform.scaledBy(x: 0, y: 0)
+        titleLabel.alpha = 0
         
         email = UITextField()
         email.backgroundColor = .lightGray
@@ -42,6 +84,8 @@ class LoginViewController: UIViewController {
         email.leftView = leftView
         email.leftViewMode = .always
         email.font = UIFont.systemFont(ofSize: 20.0)
+        email.transform = email.transform.translatedBy(x: -view.frame.width, y: 0)
+        email.alpha = 0
         
         password = UITextField()
         password.backgroundColor = .lightGray
@@ -55,6 +99,8 @@ class LoginViewController: UIViewController {
         password.leftView = leftView2
         password.leftViewMode = .always
         password.font = UIFont.systemFont(ofSize: 20.0)
+        password.transform = password.transform.translatedBy(x: -view.frame.width, y: 0)
+        password.alpha = 0
         
         loginButton = UIButton()
         loginButton.setTitle("Login", for: .normal)
@@ -62,7 +108,10 @@ class LoginViewController: UIViewController {
         loginButton.layer.cornerRadius = 20.0
         loginButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: 20.0)
         loginButton.addTarget(self, action: #selector(customAction), for: .touchUpInside)
+        loginButton.transform = loginButton.transform.translatedBy(x: -view.frame.width, y: 0)
+        loginButton.alpha = 0
         
+        view.addSubview(titleLabel)
         view.addSubview(email)
         view.addSubview(password)
         view.addSubview(loginButton)
@@ -78,8 +127,10 @@ class LoginViewController: UIViewController {
      }
     
     private func addConstraints() {
+        titleLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 10)
+        titleLabel.autoAlignAxis(toSuperviewAxis: .vertical)
         
-        email.autoPinEdge(toSuperviewSafeArea: .top, withInset: 100)
+        email.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 80)
         email.autoPinEdge(toSuperviewSafeArea: .leading, withInset: 30)
         email.autoPinEdge(toSuperviewSafeArea: .trailing, withInset: 30)
         email.autoSetDimension(.height, toSize: 50)

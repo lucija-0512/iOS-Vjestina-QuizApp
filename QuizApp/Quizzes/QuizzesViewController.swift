@@ -88,6 +88,7 @@ class QuizzesViewController: UIViewController {
     }
     
     func customAction() throws{
+        quizzes = self.quizzesUseCase.getQuizzes()
         quizzesUseCase.refreshData() { () in
             self.quizzes = self.quizzesUseCase.getQuizzes()
             self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
@@ -95,6 +96,7 @@ class QuizzesViewController: UIViewController {
             DispatchQueue.main.sync{
                 self.fact.text = "Fun Fact"
                 self.nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
+                self.tableView.reloadData()
             }
         }
      }
