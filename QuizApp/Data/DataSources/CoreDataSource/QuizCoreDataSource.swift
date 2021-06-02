@@ -73,6 +73,7 @@ struct QuizCoreDataSource: QuizCoreDataSourceProtocol {
         let quizzesToDelete = try coreDataContext.fetch(request)
         quizzesToDelete.forEach { coreDataContext.delete($0) }
         try coreDataContext.save()
+        
     }
     
 }
