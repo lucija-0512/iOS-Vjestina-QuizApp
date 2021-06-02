@@ -88,7 +88,6 @@ class QuizzesViewController: UIViewController {
     }
     
     func customAction() throws{
-        quizzes = quizzesUseCase.getQuizzes()
         quizzesUseCase.refreshData() { () in
             self.quizzes = self.quizzesUseCase.getQuizzes()
             self.quizzesGroupedByCategory = self.groupByCategory(quizzesList: self.quizzes)
@@ -118,16 +117,20 @@ class QuizzesViewController: UIViewController {
         tableView.autoPinEdge(toSuperviewEdge: .bottom)
     }
     
-    private func groupByCategory(quizzesList: [Quiz]) -> [(QuizCategory,Array<Quiz>)] {
-        var quizzesGroupedByCategory = Dictionary<QuizCategory, Array<Quiz>>()
+    private func groupByCategory(quizzesList: [Quiz]) -> [(QuizCategory,[Quiz])] {
+        var quizzesGroupedByCategory = Dictionary<QuizCategory, [Quiz]>()
         for quiz in quizzesList {
             if quizzesGroupedByCategory[quiz.category] == nil {
-            quizzesGroupedByCategory[quiz.category] = Array<Quiz>()
+            quizzesGroupedByCategory[quiz.category] = [Quiz]()
           }
             quizzesGroupedByCategory[quiz.category]?.append(quiz)
         }
         return quizzesGroupedByCategory.compactMap{$0}
       }
+    
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
 
 
 }
@@ -144,8 +147,12 @@ extension QuizzesViewController : UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CustomTableViewCell
         let quiz = quizzesGroupedByCategory[indexPath.section].1[indexPath.row]
         let url = URL(string: quiz.imageUrl)
-        let data = try? Data(contentsOf: url!)
-        cell.imgQuiz.image = UIImage(data: data!)
+        getData(from: url!) { data, response, error in
+                guard let data = data, error == nil else { return }
+                DispatchQueue.main.async() {
+                    cell.imgQuiz.image = UIImage(data: data)
+                }
+            }
         cell.titleQuiz.text = quiz.title
         cell.descriptionQuiz.text = quiz.description
         cell.levelQuiz.text = "Level \(quiz.level)"

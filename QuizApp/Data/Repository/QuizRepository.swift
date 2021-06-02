@@ -10,9 +10,11 @@ class QuizRepository: QuizRepositoryProtocol {
 
     func fetchRemoteData(completion: @escaping () -> Void) {
         networkDataSource.fetchQuizzes()  { quizzes in
-            self.coreDataSource.saveNewQuizzes(quizzes)
+            if !quizzes.isEmpty {
+                self.coreDataSource.saveNewQuizzes(quizzes)
+            }
             completion()
-               }
+       }
     }
     
     func filterLocalData(name: String?) -> [Quiz] {
