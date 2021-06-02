@@ -97,7 +97,6 @@ class QuizzesViewController: UIViewController {
                 self.nbaQuestion.text = "There are \(count) questions that contain the word \"NBA\""
             }
         }
-        
      }
     
     
