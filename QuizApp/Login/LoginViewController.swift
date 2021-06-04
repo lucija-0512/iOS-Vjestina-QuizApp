@@ -130,19 +130,17 @@ class LoginViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.animateViews()
-                //self.router.setTabViewController()
             }
         }
      }
     
     private func animateViews() {
         let height = view.frame.height
-        //email.transform = email.transform.translatedBy(x: 0, y: +view.frame.height)
+        
         UIView.animate(
             withDuration: 1.5,
             delay: 0,
             animations: {
-                //self.email.transform = .identity
                 self.titleLabel.transform = self.titleLabel.transform.translatedBy(x: 0, y: -height)
             }
         )
@@ -150,7 +148,6 @@ class LoginViewController: UIViewController {
             withDuration: 1.5,
             delay: 0.25,
             animations: {
-                //self.email.transform = .identity
                 self.email.transform = self.email.transform.translatedBy(x: 0, y: -height)
             }
         )
