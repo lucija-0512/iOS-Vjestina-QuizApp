@@ -32,6 +32,7 @@ class AppRouter : AppRouterProtocol {
         quizzesUseCase = QuizzesUseCase(quizRepository: quizRepository)
     }
     
+   
     func setStartScreen(in window: UIWindow?) {
         let vc = LoginViewController(router: self, loginUseCase: loginUseCase)
         navigationController.pushViewController(vc, animated: false)

@@ -123,8 +123,55 @@ class LoginViewController: UIViewController {
         print(name)
         print(pass)
         
-        loginUseCase.checkLogin(name: name, password: pass, router: router)
+        loginUseCase.checkLogin(name: name, password: pass, router: router) { session in
+            let defaults = UserDefaults.standard
+            defaults.set(session.token, forKey: "Token")
+            defaults.set(session.userId, forKey: "UserId")
+            
+            DispatchQueue.main.async {
+                self.animateViews()
+                //self.router.setTabViewController()
+            }
+        }
      }
+    
+    private func animateViews() {
+        let height = view.frame.height
+        //email.transform = email.transform.translatedBy(x: 0, y: +view.frame.height)
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0,
+            animations: {
+                //self.email.transform = .identity
+                self.titleLabel.transform = self.titleLabel.transform.translatedBy(x: 0, y: -height)
+            }
+        )
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0.25,
+            animations: {
+                //self.email.transform = .identity
+                self.email.transform = self.email.transform.translatedBy(x: 0, y: -height)
+            }
+        )
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0.5,
+            animations: {
+                self.password.transform = self.password.transform.translatedBy(x: 0, y: -height)
+            }
+        )
+        UIView.animate(
+            withDuration: 1.5,
+            delay: 0.75,
+            animations: {
+                self.loginButton.transform = self.loginButton.transform.translatedBy(x: 0, y: -height)
+            },
+            completion: { _ in
+                self.router.setTabViewController()
+            }
+        )
+    }
     
     private func addConstraints() {
         titleLabel.autoPinEdge(toSuperviewSafeArea: .top, withInset: 10)
