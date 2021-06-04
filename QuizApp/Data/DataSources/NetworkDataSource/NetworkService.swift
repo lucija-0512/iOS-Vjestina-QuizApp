@@ -67,6 +67,7 @@ class NetworkService : NetworkServiceProtocol {
                                     print(error)
                                     completion([])
                                 case .success(let value):
+                                    print("success")
                                     completion(value.quizzes)
                         }
                 }

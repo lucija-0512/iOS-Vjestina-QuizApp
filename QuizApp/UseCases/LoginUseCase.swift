@@ -7,7 +7,7 @@ class LoginUseCase : LoginUseCaseProtocol {
         self.networkService = networkService
     }
     
-    func checkLogin(name : String, password : String, router : AppRouterProtocol) {
+    func checkLogin(name : String, password : String, router : AppRouterProtocol, completion: @escaping (Session)-> Void) {
         guard let url = URL(string: "https://iosquiz.herokuapp.com/api/session?username=\(name)&password=\(password)") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -18,12 +18,7 @@ class LoginUseCase : LoginUseCaseProtocol {
                     print(error)
                 case .success(let value):
                     print(value)
-                    let defaults = UserDefaults.standard
-                    defaults.set(value.token, forKey: "Token")
-                    defaults.set(value.userId, forKey: "UserId")
-                    DispatchQueue.main.async {
-                        router.setTabViewController()
-                    }
+                    completion(value)
             }
         }
     }
